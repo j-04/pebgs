@@ -1,12 +1,16 @@
 package ru.pebgs.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
 
 @Entity
 @Table(schema = "public", name = "student")
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Student {
     @Id
@@ -21,7 +25,12 @@ public class Student {
     private String secondName;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    @JsonManagedReference
     private StudyGroup studyGroup;
+
+    @JsonManagedReference
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Journal journal;
 
     public Long getId() {
         return id;

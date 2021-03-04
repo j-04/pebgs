@@ -1,5 +1,7 @@
 package ru.pebgs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,10 @@ public class StudyGroup {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "studyGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JsonBackReference
+    public Set<Student> studentSet = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -30,8 +36,13 @@ public class StudyGroup {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "studyGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    public Set<Student> studentSet = new HashSet<>();
+    public Set<Student> getStudentSet() {
+        return studentSet;
+    }
+
+    public void setStudentSet(Set<Student> studentSet) {
+        this.studentSet = studentSet;
+    }
 
 
 }

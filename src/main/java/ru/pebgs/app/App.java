@@ -1,23 +1,19 @@
 package ru.pebgs.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import ru.pebgs.model.Student;
-import ru.pebgs.repository.StudentRepository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 @SpringBootApplication(scanBasePackages = "ru.pebgs.*")
-@EnableJpaRepositories("ru.pebgs.repository")
-@EntityScan("ru.pebgs.model")
 public class App implements CommandLineRunner {
 
-    private final StudentRepository studentRepository;
-
-    public App(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
@@ -30,6 +26,10 @@ public class App implements CommandLineRunner {
                 .secondName("SecondName")
                 .surname("surname")
                 .build();
-        this.studentRepository.save(student);
+        EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(student);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }
