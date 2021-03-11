@@ -34,7 +34,7 @@ public class SpringConfig {
 
     @Bean
     @Primary
-    public SessionFactory entityManagerFactory() {
+    public SessionFactory sessionFactory() {
         var entityManagerFactoryBean = new Configuration();
 
         var configurationBuilder = new ConfigurationBuilder();

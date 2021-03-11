@@ -25,7 +25,7 @@ public class Journal {
     private StudyPlan studyPlan;
 
     @JsonBackReference
-    @OneToOne(mappedBy = "journal", cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Mark mark;
 
     public Long getId() {

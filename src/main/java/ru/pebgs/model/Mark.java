@@ -3,6 +3,8 @@ package ru.pebgs.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(schema = "public", name = "mark")
@@ -17,8 +19,8 @@ public class Mark {
     private String name;
 
     @JsonManagedReference
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-    private Journal journal;
+    @OneToMany(mappedBy = "mark", cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+    private Set<Journal> journalSet;
 
     public Long getId() {
         return id;
@@ -44,11 +46,13 @@ public class Mark {
         this.name = name;
     }
 
-    public Journal getJournal() {
-        return journal;
+    public Set<Journal> getJournalSet() {
+        if (journalSet == null)
+            return new HashSet<>();
+        return journalSet;
     }
 
-    public void setJournal(Journal journal) {
-        this.journal = journal;
+    public void setJournalSet(Set<Journal> journalSet) {
+        this.journalSet = journalSet;
     }
 }

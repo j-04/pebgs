@@ -15,6 +15,8 @@ public class MainService {
 
     public Optional<Mark> getMarkById(final Long id) {
         Session entityManager = (Session) sessionFactory.createEntityManager();
-        return entityManager.byId(Mark.class).loadOptional(id);
+        return Optional.of((Mark) entityManager.createQuery("select m from Mark m where id = :id")
+                .setParameter("id", id)
+                .getSingleResult());
     }
 }
